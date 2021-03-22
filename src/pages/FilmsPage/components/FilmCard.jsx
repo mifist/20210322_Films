@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 const FilmCard = ({ film }) => {
   return (
     <div className="ui card">
@@ -31,8 +33,16 @@ const FilmCard = ({ film }) => {
   );
 };
 
-FilmCard.defaultProps = {
-  film: {},
+FilmCard.propTypes = {
+  film: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    director: PropTypes.string.isRequired,
+    img: PropTypes.string.isRequired,
+    duration: PropTypes.number.isRequired,
+    price: PropTypes.number.isRequired,
+    featured: PropTypes.bool,
+  }),
 };
 
 export default FilmCard;
