@@ -1,19 +1,19 @@
-const FilmCard = ({ films }) => {
+const FilmCard = ({ film }) => {
   return (
     <div className="ui card">
       <span className="ui right corner label">
         <i className="empty star icon"></i>
       </span>
       <div className="image">
-        <span className="ui green label ribbon">$ 220 </span>
-        <img src="img/seeker.jpg" alt="" />
+        <span className="ui green label ribbon">$ {film.price}</span>
+        <img src={film.img} alt={film.title} />
       </div>
       <div className="content">
-        <span className="header">Legend of the seeker</span>
+        <span className="header">{film.title}</span>
         <div className="meta">
-          <i className="icon users"></i> Film Director
+          <i className="icon users"></i> {film.director}
           <span className="right floated">
-            <i className="icon wait right"></i> 180 min
+            <i className="icon wait right"></i> {film.duration} min
           </span>
         </div>
       </div>

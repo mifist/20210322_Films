@@ -8,7 +8,7 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.setState(films);
+    this.setState({ films });
   }
 
   render() {
