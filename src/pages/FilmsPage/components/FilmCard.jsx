@@ -1,4 +1,4 @@
-const FilmCard = () => {
+const FilmCard = ({ films }) => {
   return (
     <div className="ui card">
       <span className="ui right corner label">
