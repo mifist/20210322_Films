@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import _orderBy from "lodash/orderBy";
 import { prop, sortWith, ascend, descend } from "ramda";
 import FilmsList from "pages/FilmsPage/components/FilmsList";
 import { films } from "data";
