@@ -4,6 +4,7 @@ import { prop, sortWith, ascend, descend } from "ramda";
 import FilmsList from "pages/FilmsPage/components/FilmsList";
 import { films } from "data";
 import FilmContext from "contexts/FilmContext";
+import FilmForm from "pages/FilmsPage/components/FilmForm";
 
 class App extends Component {
   state = {
@@ -32,7 +33,8 @@ class App extends Component {
     return (
       <div className="ui container mt-3">
         <FilmContext.Provider value={this.value}>
-          <FilmsList films={films} />
+          {/* <FilmsList films={films} /> */}
+          <FilmForm />
         </FilmContext.Provider>
       </div>
     );
