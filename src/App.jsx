@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import _sortBy from "lodash/sortBy";
+import { prop, sortBy } from "ramda";
 import FilmsList from "pages/FilmsPage/components/FilmsList";
 import { films } from "data";
 import _ from "lodash";
@@ -9,7 +9,7 @@ class App extends Component {
     films: [],
   };
 
-  sortFilms = (films) => _sortBy(films, ["title"]);
+  sortFilms = (films) => sortBy(prop("title"), films);
 
   componentDidMount() {
     this.setState({ films: this.sortFilms(films) });
