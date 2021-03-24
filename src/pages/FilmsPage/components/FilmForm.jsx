@@ -24,9 +24,17 @@ class FilmForm extends Component {
       data: { ...this.state.data, [e.target.name]: e.target.value },
     });
 
-  handleNumbeChange = (e) => {};
+  handleNumberChange = (e) => {
+    let value = parseFloat(e.target.value);
 
-  handleCheckboxChange = (e) => {};
+    value = isNaN(value) || value === 0 ? "" : Math.abs(value);
+    this.setState({ data: { ...this.state.data, [e.target.name]: value } });
+  };
+
+  handleCheckboxChange = (e) =>
+    this.setState({
+      data: { ...this.state.data, [e.target.name]: e.target.checked },
+    });
 
   render() {
     const { data } = this.state;
@@ -114,7 +122,7 @@ class FilmForm extends Component {
               <label htmlFor="duration">Duration</label>
               <input
                 value={data.duration}
-                onChange={this.handleNumbeChange}
+                onChange={this.handleNumberChange}
                 type="number"
                 name="duration"
                 id="duration"
@@ -127,7 +135,7 @@ class FilmForm extends Component {
               <label htmlFor="price">Price</label>
               <input
                 value={data.price}
-                onChange={this.handleNumbeChange}
+                onChange={this.handleNumberChange}
                 type="number"
                 name="price"
                 id="price"
