@@ -1,27 +1,39 @@
 import React, { Component } from "react";
-import { prop, sortBy } from "ramda";
+import _orderBy from "lodash/orderBy";
+import { prop, sortWith, ascend, descend } from "ramda";
 import FilmsList from "pages/FilmsPage/components/FilmsList";
 import { films } from "data";
-import _ from "lodash";
+import FilmContext from "contexts/FilmContext";
 
 class App extends Component {
   state = {
     films: [],
   };
 
-  sortFilms = (films) => sortBy(prop("title"), films);
+  sortFilms = (films) =>
+    _orderBy(films, ["featured", "title"], ["desc", "asc"]);
 
   componentDidMount() {
     this.setState({ films: this.sortFilms(films) });
   }
+  toggleFeatured = (id) =>
+    this.setState(({ films }) => ({
+      films: this.sortFilms(
+        films.map((f) => (f._id === id ? { ...f, featured: !f.featured } : f))
+      ),
+    }));
 
-  onReset = () => this.setState({ films });
+  value = {
+    toggleFeatured: this.toggleFeatured,
+  };
 
   render() {
     const { films } = this.state;
     return (
       <div className="ui container mt-3">
-        <FilmsList films={films} />
+        <FilmContext.Provider value={this.value}>
+          <FilmsList films={films} />
+        </FilmContext.Provider>
       </div>
     );
   }
