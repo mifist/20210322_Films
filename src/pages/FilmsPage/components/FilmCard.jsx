@@ -1,3 +1,4 @@
+import { memo } from "react";
 import PropTypes from "prop-types";
 import Featured from "components/Featured";
 
@@ -44,4 +45,4 @@ FilmCard.propTypes = {
   }),
 };
 
-export default FilmCard;
+export default memo(FilmCard);

@@ -11,7 +11,7 @@ class App extends Component {
   };
 
   sortFilms = (films) =>
-    _orderBy(films, ["featured", "title"], ["desc", "asc"]);
+    sortWith([descend(prop("featured")), ascend(prop("title"))], films);
 
   componentDidMount() {
     this.setState({ films: this.sortFilms(films) });
