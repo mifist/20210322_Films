@@ -14,7 +14,7 @@ class FilmForm extends Component {
       tags: tags.includes(id) ? tags.filter((x) => x !== id) : [...tags, id],
     }));
 
-  handleGenreChange = () => {};
+  handleGenreChange = (genre) => this.setState({ genre });
 
   handleSelectChange = () => {};
 
@@ -51,10 +51,18 @@ class FilmForm extends Component {
             <div className="grouped fields">
               <label>Genres</label>
               {/* ====== */}
-              <div className="ui radio checkbox field">
-                <input type="radio" name="example2" checked="checked" />
-                <label>Genre 1</label>
-              </div>
+              {genres.map((gen) => (
+                <div key={gen._id} className="ui radio checkbox field">
+                  <input
+                    checked={genre === gen._id}
+                    onChange={() => this.handleGenreChange(gen._id)}
+                    type="radio"
+                    id={`genre-${gen._id}`}
+                    name="example2"
+                  />
+                  <label htmlFor={`genre-${gen._id}`}>{gen.title}</label>
+                </div>
+              ))}
               {/* ====== */}
             </div>
           </div>
