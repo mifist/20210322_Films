@@ -1,5 +1,6 @@
 import React, { Component, createRef } from "react";
 import ImageLoader from "components/ImageLoader";
+import FormMessage from "components/FormMessage";
 
 const initialData = {
   title: "",
@@ -15,6 +16,7 @@ class FilmForm extends Component {
   state = {
     data: initialData,
     photo: "",
+    errors: {},
   };
 
   photoRef = createRef();
@@ -50,7 +52,7 @@ class FilmForm extends Component {
     });
 
   render() {
-    const { data } = this.state;
+    const { data, errors } = this.state;
     return (
       <form onSubmit={this.handleSubmit} className="ui form">
         <div className="ui grid mb-3">
@@ -59,7 +61,7 @@ class FilmForm extends Component {
             {/*  START left column */}
             <div className="ten wide column">
               {/* START title */}
-              <div className="field">
+              <div className={`field ${errors.title ? "error" : ""}`}>
                 <label htmlFor="title">Film title</label>
                 <input
                   value={data.title}
@@ -69,16 +71,18 @@ class FilmForm extends Component {
                   id="title"
                   placeholder="film title"
                 />
+                {errors.title && <FormMessage>{errors.title}</FormMessage>}
               </div>
               {/* END title */}
               {/* START IMG */}
-              <div className="field img-grid">
+              <div className={`field img-grid ${errors.img ? "error" : ""}`}>
                 <label htmlFor="img">Image</label>
                 <input
                   value={data.img}
                   onChange={this.handleStringChange}
                   name="img"
                 />
+                {errors.img && <FormMessage>{errors.img}</FormMessage>}
 
                 <div className="inp-file">
                   <label htmlFor="photo">Photo</label>
