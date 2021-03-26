@@ -4,10 +4,12 @@ import FilmsList from "pages/FilmsPage/components/FilmsList";
 import { films } from "data";
 import FilmContext from "contexts/FilmContext";
 import FilmForm from "pages/FilmsPage/components/FilmForm";
+import TopNavigation from "components/TopNavigation";
 
 class App extends Component {
   state = {
     films: [],
+    showAddForm: false,
   };
 
   sortFilms = (films) =>
@@ -16,6 +18,10 @@ class App extends Component {
   componentDidMount() {
     this.setState({ films: this.sortFilms(films) });
   }
+
+  showForm = (e) => this.setState({ showAddForm: true });
+  hideForm = (e) => this.setState({ showAddForm: false });
+
   toggleFeatured = (id) =>
     this.setState(({ films }) => ({
       films: this.sortFilms(
@@ -28,12 +34,25 @@ class App extends Component {
   };
 
   render() {
-    const { films } = this.state;
+    const { films, showAddForm } = this.state;
+    const cols = showAddForm ? "ten" : "sixteen";
+
     return (
       <div className="ui container mt-3">
         <FilmContext.Provider value={this.value}>
-          {/* <FilmsList films={films} /> */}
-          <FilmForm />
+          <TopNavigation showForm={this.showForm} />
+
+          <div className="ui stackable grid">
+            {showAddForm && (
+              <div className="six wide column">
+                <FilmForm hideForm={this.hideForm} />
+              </div>
+            )}
+
+            <div className={`${cols} wide column`}>
+              <FilmsList films={films} />
+            </div>
+          </div>
         </FilmContext.Provider>
       </div>
     );
