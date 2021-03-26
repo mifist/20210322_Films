@@ -9,7 +9,10 @@ class FilmForm extends Component {
     multipleSelect: [],
   };
 
-  handleTagsChange = () => {};
+  handleTagsChange = (id) =>
+    this.setState(({ tags }) => ({
+      tags: tags.includes(id) ? tags.filter((x) => x !== id) : [...tags, id],
+    }));
 
   handleGenreChange = () => {};
 
@@ -27,12 +30,19 @@ class FilmForm extends Component {
             <div class="grouped fields">
               <label>Tags</label>
               {/* ====== */}
-              <div className="field">
-                <div className="ui checkbox field">
-                  <input type="checkbox" id="tag1" />
-                  <label for="tag1">Tag 1</label>
+              {tagsList.map((tag) => (
+                <div key={tag._id} className="field">
+                  <div className="ui checkbox field">
+                    <input
+                      type="checkbox"
+                      id={`tag-${tag._id}`}
+                      checked={tags.includes(tag._id)}
+                      onChange={() => this.handleTagsChange(tag._id)}
+                    />
+                    <label htmlFor={`tag-${tag._id}`}>{tag.title}</label>
+                  </div>
                 </div>
-              </div>
+              ))}
               {/* ====== */}
             </div>
           </div>
