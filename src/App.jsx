@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { prop, sortWith, ascend, descend } from "ramda";
+import { generate as id } from "shortid";
 import FilmsList from "pages/FilmsPage/components/FilmsList";
 import { films } from "data";
 import FilmContext from "contexts/FilmContext";
@@ -29,6 +30,12 @@ class App extends Component {
       ),
     }));
 
+  saveFilm = (film) =>
+    this.setState(({ films, showAddForm }) => ({
+      films: this.sortFilms([...films, { _id: id(), ...film }]),
+      showAddForm: false,
+    }));
+
   value = {
     toggleFeatured: this.toggleFeatured,
   };
@@ -45,7 +52,7 @@ class App extends Component {
           <div className="ui stackable grid">
             {showAddForm && (
               <div className="six wide column">
-                <FilmForm hideForm={this.hideForm} />
+                <FilmForm saveFilm={this.saveFilm} hideForm={this.hideForm} />
               </div>
             )}
 

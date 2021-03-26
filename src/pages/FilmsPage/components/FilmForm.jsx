@@ -53,7 +53,7 @@ class FilmForm extends Component {
     const errors = this.validate(this.state.data);
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
-      console.log(this.state.data);
+      this.props.saveFilm(this.state.data);
       this.setState({ data: initialData });
     }
   };
@@ -240,6 +240,7 @@ class FilmForm extends Component {
 
 FilmForm.propTypes = {
   hideForm: PropTypes.func.isRequired,
+  saveFilm: PropTypes.func.isRequired,
 };
 
 export default FilmForm;
