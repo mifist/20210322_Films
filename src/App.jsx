@@ -11,6 +11,7 @@ class App extends Component {
   state = {
     films: [],
     showAddForm: false,
+    selectedFilm: {},
   };
 
   sortFilms = (films) =>
@@ -20,8 +21,14 @@ class App extends Component {
     this.setState({ films: this.sortFilms(films) });
   }
 
-  showForm = (e) => this.setState({ showAddForm: true });
-  hideForm = (e) => this.setState({ showAddForm: false });
+  selectFilmForEdit = (selectedFilm) =>
+    this.setState({
+      selectedFilm,
+      showAddForm: true,
+    });
+
+  showForm = (e) => this.setState({ showAddForm: true, selectedFilm: {} });
+  hideForm = (e) => this.setState({ showAddForm: false, selectedFilm: {} });
 
   toggleFeatured = (id) =>
     this.setState(({ films }) => ({
@@ -30,18 +37,29 @@ class App extends Component {
       ),
     }));
 
-  saveFilm = (film) =>
-    this.setState(({ films, showAddForm }) => ({
+  addFilm = (film) =>
+    this.setState(({ films, showAddForm, selectedFilm }) => ({
       films: this.sortFilms([...films, { _id: id(), ...film }]),
       showAddForm: false,
+      selectedFilm: {},
     }));
+
+  updateFilm = (film) =>
+    this.setState(({ films, showAddForm, selectedFilm }) => ({
+      films: this.sortFilms(films.map((f) => (f._id === film._id ? film : f))),
+      showAddForm: false,
+      selectedFilm: {},
+    }));
+
+  saveFilm = (film) => (film._id ? this.updateFilm(film) : this.addFilm(film));
 
   value = {
     toggleFeatured: this.toggleFeatured,
+    selectFilmForEdit: this.selectFilmForEdit,
   };
 
   render() {
-    const { films, showAddForm } = this.state;
+    const { films, showAddForm, selectedFilm } = this.state;
     const cols = showAddForm ? "ten" : "sixteen";
 
     return (
@@ -52,7 +70,11 @@ class App extends Component {
           <div className="ui stackable grid">
             {showAddForm && (
               <div className="six wide column">
-                <FilmForm saveFilm={this.saveFilm} hideForm={this.hideForm} />
+                <FilmForm
+                  film={selectedFilm}
+                  saveFilm={this.saveFilm}
+                  hideForm={this.hideForm}
+                />
               </div>
             )}
 

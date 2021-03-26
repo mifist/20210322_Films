@@ -1,6 +1,7 @@
 import { memo } from "react";
 import PropTypes from "prop-types";
 import Featured from "components/Featured";
+import FilmCardButtons from "pages/FilmsPage/components/FilmCardButtons";
 
 const FilmCard = ({ film }) => {
   return (
@@ -19,16 +20,7 @@ const FilmCard = ({ film }) => {
           </span>
         </div>
       </div>
-      <div className="extra content">
-        <div className="ui two buttons">
-          <span className="ui green basic button">
-            <i className="ui icon edit"></i>
-          </span>
-          <span className="ui red basic button">
-            <i className="ui icon trash"></i>
-          </span>
-        </div>
-      </div>
+      <FilmCardButtons film={film} />
     </div>
   );
 };
