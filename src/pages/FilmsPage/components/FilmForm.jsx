@@ -25,7 +25,12 @@ class FilmForm extends Component {
     this.setState({ sel });
   };
 
-  handleMultiSelect = () => {};
+  handleMultiSelect = (e) => {
+    const multipleSelect = Array.from(e.target.selectedOptions).map(
+      (o) => o.value
+    );
+    this.setState({ multipleSelect });
+  };
 
   render() {
     const { tags, genre, sel, multipleSelect } = this.state;
@@ -89,9 +94,19 @@ class FilmForm extends Component {
             </select>
           </div>
           {/*  ==============================  multipleSelect ================  */}
+
           <div className="four wide column">
-            <select multiple size="SIZE">
-              <option value="1111">tag 1</option>
+            <select
+              value={multipleSelect}
+              onChange={this.handleMultiSelect}
+              multiple
+              size={genres.length}
+            >
+              {genres.map((gen) => (
+                <option key={gen._id} value={gen._id}>
+                  {gen.title}
+                </option>
+              ))}
             </select>
           </div>
         </div>
