@@ -16,7 +16,14 @@ class FilmForm extends Component {
 
   handleGenreChange = (genre) => this.setState({ genre });
 
-  handleSelectChange = () => {};
+  handleSelectChange = (e) => {
+    const sel = Number(e.target.value);
+    if (sel === -1) {
+      alert("choose genre");
+      return;
+    }
+    this.setState({ sel });
+  };
 
   handleMultiSelect = () => {};
 
@@ -68,8 +75,17 @@ class FilmForm extends Component {
           </div>
           {/*  ==============================   sel ================  */}
           <div className="four wide column">
-            <select className="ui dropdown">
-              <option value="1111">tag 1</option>
+            <select
+              value={sel}
+              onChange={this.handleSelectChange}
+              className="ui dropdown"
+            >
+              <option value="-1">Choose genre</option>
+              {genres.map((gen) => (
+                <option key={gen._id} value={gen._id}>
+                  {gen.title}
+                </option>
+              ))}
             </select>
           </div>
           {/*  ==============================  multipleSelect ================  */}
