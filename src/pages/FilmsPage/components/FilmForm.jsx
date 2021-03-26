@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, createRef } from "react";
 import ImageLoader from "components/ImageLoader";
 
 const initialData = {
@@ -14,7 +14,19 @@ const initialData = {
 class FilmForm extends Component {
   state = {
     data: initialData,
+    photo: "",
   };
+
+  photoRef = createRef();
+
+  updatePhoto = (e) => {
+    const file = this.photoRef.current.files && this.photoRef.current.files[0];
+    if (file) {
+      const img = "/img/" + file.name;
+      this.setState({ data: { ...this.state.data, img } });
+    }
+  };
+
   handleSubmit = (e) => {
     e.preventDefault();
     console.log(this.state.data);
@@ -70,7 +82,12 @@ class FilmForm extends Component {
 
                 <div className="inp-file">
                   <label htmlFor="photo">Photo</label>
-                  <input type="file" id="photo" />
+                  <input
+                    ref={this.photoRef}
+                    onChange={this.updatePhoto}
+                    type="file"
+                    id="photo"
+                  />
                 </div>
               </div>
               {/* END IMG */}
