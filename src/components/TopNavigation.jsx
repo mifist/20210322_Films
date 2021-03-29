@@ -1,3 +1,4 @@
+import { memo } from "react";
 import PropTypes from "prop-types";
 
 const TopNavigation = ({ showForm }) => {
@@ -18,4 +19,4 @@ TopNavigation.propTypes = {
   showForm: PropTypes.func.isRequired,
 };
 
-export default TopNavigation;
+export default memo(TopNavigation);
