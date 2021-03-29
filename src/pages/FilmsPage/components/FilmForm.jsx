@@ -5,6 +5,7 @@ import ImageLoader from "components/ImageLoader";
 import FormMessage from "components/FormMessage";
 
 const initialData = {
+  _id: null,
   title: "",
   img: "",
   description: "",
@@ -22,6 +23,19 @@ class FilmForm extends Component {
   };
 
   photoRef = createRef();
+
+  componentDidMount() {
+    if (this.props.film._id) {
+      this.setState({ data: this.props.film });
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.film._id && this.props.film._id !== prevProps.film._id) {
+      this.setState({ data: this.props.film });
+    } else if (!this.props.film._id && prevProps.film._id) {
+      this.setState({ data: initialData });
+    }
+  }
 
   updatePhoto = (e) => {
     const file = this.photoRef.current.files && this.photoRef.current.files[0];
