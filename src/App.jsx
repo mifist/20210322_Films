@@ -6,6 +6,7 @@ import { films } from "data";
 import FilmContext from "contexts/FilmContext";
 import FilmForm from "pages/FilmsPage/components/FilmForm";
 import TopNavigation from "components/TopNavigation";
+import axios from "axios";
 
 class App extends Component {
   state = {
@@ -18,6 +19,7 @@ class App extends Component {
     sortWith([descend(prop("featured")), ascend(prop("title"))], films);
 
   componentDidMount() {
+    axios.get("/api/test").then((res) => console.log(res.data.mes));
     this.setState({ films: this.sortFilms(films) });
   }
 
