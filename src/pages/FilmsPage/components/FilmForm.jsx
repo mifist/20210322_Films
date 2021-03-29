@@ -29,12 +29,15 @@ class FilmForm extends Component {
       this.setState({ data: this.props.film });
     }
   }
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.film._id && this.props.film._id !== prevProps.film._id) {
-      this.setState({ data: this.props.film });
-    } else if (!this.props.film._id && prevProps.film._id) {
-      this.setState({ data: initialData });
+
+  static getDerivedStateFromProps({ film }, { data }) {
+    if (film._id && film._id !== data._id) {
+      return { data: film, errors: {} };
     }
+    if (!film._id && data._id) {
+      return { data: initialData, errors: {} };
+    }
+    return null;
   }
 
   updatePhoto = (e) => {
