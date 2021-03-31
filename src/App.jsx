@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { prop, sortWith, ascend, descend } from "ramda";
+import _find from "lodash/find";
 import FilmsList from "pages/FilmsPage/components/FilmsList";
 import FilmContext from "contexts/FilmContext";
 import FilmForm from "pages/FilmsPage/components/FilmForm";
@@ -31,12 +32,10 @@ class App extends Component {
   showForm = (e) => this.setState({ showAddForm: true, selectedFilm: {} });
   hideForm = (e) => this.setState({ showAddForm: false, selectedFilm: {} });
 
-  toggleFeatured = (id) =>
-    this.setState(({ films }) => ({
-      films: this.sortFilms(
-        films.map((f) => (f._id === id ? { ...f, featured: !f.featured } : f))
-      ),
-    }));
+  toggleFeatured = (_id) => {
+    const film = _find(this.state.films, { _id });
+    return this.updateFilm({ ...film, featured: !film.featured });
+  };
 
   addFilm = (filmData) =>
     api.films.create(filmData).then((film) =>
