@@ -6,12 +6,14 @@ import FilmContext from "contexts/FilmContext";
 import FilmForm from "pages/FilmsPage/components/FilmForm";
 import TopNavigation from "components/TopNavigation";
 import api from "api";
+import { FullSpinner } from "styles/app";
 
 class App extends Component {
   state = {
     films: [],
     showAddForm: false,
     selectedFilm: {},
+    loading: true,
   };
 
   sortFilms = (films) =>
@@ -20,7 +22,9 @@ class App extends Component {
   componentDidMount() {
     api.films
       .fetchAll()
-      .then((films) => this.setState({ films: this.sortFilms(films) }));
+      .then((films) =>
+        this.setState({ films: this.sortFilms(films), loading: false })
+      );
   }
 
   selectFilmForEdit = (selectedFilm) =>
@@ -75,7 +79,7 @@ class App extends Component {
   };
 
   render() {
-    const { films, showAddForm, selectedFilm } = this.state;
+    const { films, showAddForm, selectedFilm, loading } = this.state;
     const cols = showAddForm ? "ten" : "sixteen";
 
     return (
@@ -95,7 +99,7 @@ class App extends Component {
             )}
 
             <div className={`${cols} wide column`}>
-              <FilmsList films={films} />
+              {loading ? <FullSpinner /> : <FilmsList films={films} />}
             </div>
           </div>
         </FilmContext.Provider>
