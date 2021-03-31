@@ -14,6 +14,8 @@ const api = {
   },
   users: {
     create: (user) => axios.post("/api/users/", { user }),
+    login: (credentials) =>
+      axios.post("/api/auth", { credentials }).then((res) => res.data.token),
   },
 };
 

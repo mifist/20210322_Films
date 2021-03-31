@@ -6,7 +6,10 @@ const SignupPage = (props) => {
   const history = useHistory();
 
   const submit = (user) =>
-    api.users.create(user).then(() => history.push("/login"));
+    api.users.create(user).then(() => {
+      props.setMessage("User has created");
+      history.push("/login");
+    });
 
   return (
     <div className="ui grid">
