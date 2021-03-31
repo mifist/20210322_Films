@@ -60,11 +60,13 @@ class App extends Component {
   saveFilm = (film) => (film._id ? this.updateFilm(film) : this.addFilm(film));
 
   deleteFilm = (film) =>
-    this.setState(({ films, selectedFilm, showAddForm }) => ({
-      films: this.sortFilms(films.filter((f) => f._id !== film._id)),
-      selectedFilm: {},
-      showAddForm: false,
-    }));
+    api.films.delete(film).then(() =>
+      this.setState(({ films, selectedFilm, showAddForm }) => ({
+        films: this.sortFilms(films.filter((f) => f._id !== film._id)),
+        selectedFilm: {},
+        showAddForm: false,
+      }))
+    );
 
   value = {
     toggleFeatured: this.toggleFeatured,
