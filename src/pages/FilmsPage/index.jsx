@@ -78,7 +78,7 @@ class FilmsPage extends Component {
               render={({ match }) => (
                 <FilmForm
                   saveFilm={this.saveFilm}
-                  film={_find(films, { _id: match.params._id })}
+                  film={_find(films, { _id: match.params._id }) || {}}
                 />
               )}
             />
