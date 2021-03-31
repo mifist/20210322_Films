@@ -1,22 +1,25 @@
 import { memo } from "react";
-import PropTypes from "prop-types";
+import { NavLink } from "react-router-dom";
 
-const TopNavigation = ({ showForm }) => {
+const TopNavigation = () => {
   return (
     <div className="ui secondary pointing menu">
-      <a href="/" className="item">
+      <NavLink exact to="/" className="item">
+        <i class="icon home" />
         Home
-      </a>
-      <span onClick={showForm} className="item">
-        <i className="icon plus"></i>
+      </NavLink>
+
+      <NavLink exact to="/films" className="item">
+        <i className="icon film" />
+        Films
+      </NavLink>
+
+      <NavLink exact to="/films/new" className="item">
+        <i className="icon plus" />
         Add new film
-      </span>
+      </NavLink>
     </div>
   );
-};
-
-TopNavigation.propTypes = {
-  showForm: PropTypes.func.isRequired,
 };
 
 export default memo(TopNavigation);

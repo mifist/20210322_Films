@@ -1,15 +1,12 @@
 import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import FilmContext from "contexts/FilmContext";
 
 const SelectButton = ({ film }) => {
-  const { selectFilmForEdit } = useContext(FilmContext);
   return (
-    <span
-      onClick={() => selectFilmForEdit(film)}
-      className="ui green basic button"
-    >
-      <i className="ui icon edit"></i>
-    </span>
+    <Link to={`/films/edit/${film._id}`} className="ui green basic button">
+      <i className="ui icon edit" />
+    </Link>
   );
 };
 
