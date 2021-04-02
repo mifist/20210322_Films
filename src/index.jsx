@@ -1,14 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter as Router } from "react-router-dom";
 import "semantic-ui-css/semantic.min.css";
+import { AppProviders } from "contexts";
+
 import App from "App";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
+    <AppProviders>
       <App />
-    </Router>
+    </AppProviders>
   </React.StrictMode>,
   document.getElementById("root")
 );
