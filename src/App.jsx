@@ -1,5 +1,6 @@
 import React, { Component, lazy, Suspense } from "react";
 import { Route } from "react-router-dom";
+import jwtDecode from "jwt-decode";
 import TopNavigation from "components/TopNavigation";
 import HomePage from "pages/HomePage";
 import { FullSpinner } from "styles/app";
@@ -23,13 +24,23 @@ class App extends Component {
 
   componentDidMount() {
     if (localStorage.filmsToken) {
-      this.setState({ user: { token: localStorage.filmsToken, role: "user" } });
+      this.setState({
+        user: {
+          token: localStorage.filmsToken,
+          role: jwtDecode(localStorage.filmsToken).user.role,
+        },
+      });
       setAuthorizationHeader(localStorage.filmsToken);
     }
   }
 
   login = (token) => {
-    this.setState({ user: { token, role: "user" } });
+    this.setState({
+      user: {
+        token,
+        role: jwtDecode(token).user.role,
+      },
+    });
     localStorage.filmsToken = token;
     setAuthorizationHeader(token);
   };
