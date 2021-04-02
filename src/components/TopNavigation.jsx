@@ -1,8 +1,13 @@
 import { memo } from "react";
-import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
+import { useUserState, useLogout } from "contexts/UserContext";
 
-const TopNavigation = ({ isAuth, logout, isAdmin }) => {
+const TopNavigation = () => {
+  const user = useUserState();
+  const logout = useLogout();
+  const isAdmin = user.token && user.role === "admin";
+  const isAuth = !!user.token;
+
   return (
     <div className="ui secondary pointing menu">
       <NavLink exact to="/" className="item">
@@ -23,7 +28,7 @@ const TopNavigation = ({ isAuth, logout, isAdmin }) => {
 
       <div className="right menu">
         {isAuth ? (
-          <span onClick={logout} className="item">
+          <span onClick={() => logout()} className="item">
             <i className="icon sign-out" /> Logout
           </span>
         ) : (
@@ -39,11 +44,6 @@ const TopNavigation = ({ isAuth, logout, isAdmin }) => {
       </div>
     </div>
   );
-};
-
-TopNavigation.propTypes = {
-  logout: PropTypes.func.isRequired,
-  isAuth: PropTypes.bool.isRequired,
 };
 
 export default memo(TopNavigation);

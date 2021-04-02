@@ -1,58 +1,47 @@
-import React, { Component, lazy, Suspense } from "react";
+import { lazy, Suspense, useState } from "react";
 import { Route } from "react-router-dom";
 import TopNavigation from "components/TopNavigation";
 import HomePage from "pages/HomePage";
 import { FullSpinner } from "styles/app";
-import UserContext from "contexts/UserContext";
+import { useUserState } from "contexts/UserContext";
 
 const FilmsPage = lazy(() => import("pages/FilmsPage"));
 const SignupPage = lazy(() => import("pages/SignupPage"));
 const LoginPage = lazy(() => import("pages/LoginPage"));
 
-class App extends Component {
-  state = {
-    user: initUser,
-    message: "",
-  };
+const App = () => {
+  const [message, setMessage] = useState("");
+  const user = useUserState();
 
-  setMessage = (message) => this.setState({ message });
+  return (
+    <Suspense fallback={FullSpinner}>
+      <div className="ui container mt-3">
+        <TopNavigation />
 
-  render() {
-    const { user, message } = this.state;
-    return (
-      <Suspense fallback={FullSpinner}>
-        <div className="ui container mt-3">
-          <TopNavigation
-            isAdmin={!!user.token && user.role === "admin"}
-            logout={this.logout}
-            isAuth={!!user.token}
-          />
+        {message && (
+          <div className="ui info message">
+            <i onClick={() => setMessage("")} className="close icon" />
+            {message}
+          </div>
+        )}
 
-          {message && (
-            <div className="ui info message">
-              <i onClick={() => this.setMessage("")} className="close icon" />
-              {message}
-            </div>
-          )}
+        <Route exact path="/">
+          <HomePage />
+        </Route>
 
-          <Route exact path="/">
-            <HomePage />
-          </Route>
+        <Route path="/films">
+          <FilmsPage user={user} />
+        </Route>
 
-          <UserContext.Provider value={{ user }}>
-            <Route path="/films" render={(props) => <FilmsPage {...props} />} />
-          </UserContext.Provider>
-
-          <Route path="/signup">
-            <SignupPage setMessage={this.setMessage} />
-          </Route>
-          <Route path="/login">
-            <LoginPage login={this.login} />
-          </Route>
-        </div>
-      </Suspense>
-    );
-  }
-}
+        <Route path="/signup">
+          <SignupPage setMessage={setMessage} />
+        </Route>
+        <Route path="/login">
+          <LoginPage />
+        </Route>
+      </div>
+    </Suspense>
+  );
+};
 
 export default App;
