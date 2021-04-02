@@ -7,7 +7,7 @@ const LoginPage = (props) => {
 
   const submit = (user) =>
     api.users.login(user).then((token) => {
-      console.log(token);
+      props.login(token);
       history.push("/films");
     });
 

@@ -3,6 +3,7 @@ import { Route } from "react-router-dom";
 import TopNavigation from "components/TopNavigation";
 import HomePage from "pages/HomePage";
 import { FullSpinner } from "styles/app";
+import { setAuthorizationHeader } from "api";
 
 const FilmsPage = lazy(() => import("pages/FilmsPage"));
 const SignupPage = lazy(() => import("pages/SignupPage"));
@@ -19,9 +20,19 @@ class App extends Component {
     message: "",
   };
 
-  setMessage = (message) => this.setState({ message });
+  login = (token) => {
+    this.setState({ user: { token, role: "user" } });
+    localStorage.filmsToken = token;
+    setAuthorizationHeader(token);
+  };
 
-  logout = () => this.setState({ user: { token: null } });
+  logout = () => {
+    this.setState({ user: { token: null, role: "" } });
+    setAuthorizationHeader();
+    delete localStorage.filmsToken;
+  };
+
+  setMessage = (message) => this.setState({ message });
 
   render() {
     const { user, message } = this.state;
@@ -47,7 +58,7 @@ class App extends Component {
             <SignupPage setMessage={this.setMessage} />
           </Route>
           <Route path="/login">
-            <LoginPage />
+            <LoginPage login={this.login} />
           </Route>
         </div>
       </Suspense>
