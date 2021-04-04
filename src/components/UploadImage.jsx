@@ -11,15 +11,7 @@ const UploadImage = ({ img, updatePhoto }) => {
   const [file, setFile] = useState(null);
   const [renderImg, setRenderImg] = useState(fakeImg);
   const [imgError, setImgError] = useState(null);
-  const {
-    data,
-    isError,
-    isSuccess,
-    isLoading,
-    isIdle,
-    error,
-    run,
-  } = useAsync();
+  const { isLoading, run } = useAsync();
 
   useEffect(() => {
     if (img) {

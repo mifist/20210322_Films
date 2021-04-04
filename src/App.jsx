@@ -14,7 +14,7 @@ const App = () => {
   const user = useUserState();
 
   return (
-    <Suspense fallback={FullSpinner}>
+    <Suspense fallback={<FullSpinner />}>
       <div className="ui container mt-3">
         <TopNavigation />
 

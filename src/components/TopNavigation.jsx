@@ -11,7 +11,7 @@ const TopNavigation = () => {
   return (
     <div className="ui secondary pointing menu">
       <NavLink exact to="/" className="item">
-        <i class="icon home" />
+        <i className="icon home" />
         Home
       </NavLink>
 
