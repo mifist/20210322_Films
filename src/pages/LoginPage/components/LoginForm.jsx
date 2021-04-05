@@ -51,7 +51,6 @@ class LoginForm extends Component {
         <div className={errors.email ? "error field" : "field"}>
           <label htmlFor="email">Email</label>
           <input
-            role="email"
             value={data.email}
             onChange={this.handleChange}
             type="text"

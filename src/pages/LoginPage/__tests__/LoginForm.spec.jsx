@@ -1,4 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { MemoryRouter as Router } from "react-router-dom";
 import LoginForm from "pages/LoginPage/components/LoginForm";
 import { fake, build } from "@jackfranklin/test-data-bot";
@@ -27,10 +28,11 @@ test("onChange should change controls email, password", () => {
   expect(passwordEl).toHaveValue(password);
 });
 
-test("click should invoke subtmi", () => {
+test("should invoke handleSubmit", () => {
+  const submit = jest.fn(() => Promise.resolve());
   render(
     <Router>
-      <LoginForm />
+      <LoginForm submit={submit} />
     </Router>
   );
   const { email, password } = buildFormData();
@@ -38,8 +40,33 @@ test("click should invoke subtmi", () => {
   const passwordEl = screen.getByLabelText(/password/i);
   const btnEl = screen.getByText(/login/i);
 
-  fireEvent.change(emailEl, { target: { value: email } });
-  fireEvent.change(passwordEl, { target: { value: password } });
+  userEvent.type(emailEl, email);
+  userEvent.type(passwordEl, password);
 
-  fireEvent.click(btnEl);
+  userEvent.click(btnEl);
+
+  expect(submit).toHaveBeenCalledTimes(1);
+  expect(submit).toHaveBeenCalledWith({ email, password });
+});
+
+test("should show error message", () => {
+  const submit = jest.fn(() => Promise.resolve());
+  render(
+    <Router>
+      <LoginForm submit={submit} />
+    </Router>
+  );
+  const { email, password } = buildFormData();
+  const emailEl = screen.getByLabelText(/email/i);
+  const passwordEl = screen.getByLabelText(/password/i);
+  const btnEl = screen.getByText(/login/i);
+
+  userEvent.type(emailEl, email);
+  userEvent.type(passwordEl, password);
+
+  userEvent.click(btnEl);
+
+  /* find FormMesage 
+    exists in Dom
+ */
 });
