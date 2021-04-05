@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Redirect, Route, withRouter } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 import { prop, sortWith, ascend, descend } from "ramda";
 import _find from "lodash/find";
 import FilmsList from "pages/FilmsPage/components/FilmsList";
@@ -7,6 +7,7 @@ import FilmContext from "contexts/FilmContext";
 import FilmForm from "pages/FilmsPage/components/FilmForm";
 import api from "api";
 import { FullSpinner } from "styles/app";
+import AdminRoute from "pages/FilmsPage/components/AdminRoute";
 
 class FilmsPage extends Component {
   state = {
@@ -71,19 +72,13 @@ class FilmsPage extends Component {
         <div className="ui stackable grid">
           {user.token && user.role === "admin" ? (
             <div className="six wide column">
-              <Route path="/films/new">
-                <FilmForm film={{}} saveFilm={this.saveFilm} />
-              </Route>
+              <AdminRoute path="/films/new">
+                <FilmForm films={films} saveFilm={this.saveFilm} />
+              </AdminRoute>
 
-              <Route
-                path="/films/edit/:_id"
-                render={({ match }) => (
-                  <FilmForm
-                    saveFilm={this.saveFilm}
-                    film={_find(films, { _id: match.params._id }) || {}}
-                  />
-                )}
-              />
+              <AdminRoute path="/films/edit/:_id">
+                <FilmForm films={films} saveFilm={this.saveFilm} />
+              </AdminRoute>
             </div>
           ) : (
             <Redirect to="/films" />
