@@ -9,6 +9,8 @@ const api = {
       axios
         .put(`/api/authfilms/${film._id}`, { film })
         .then((res) => res.data.film),
+    fetchById: (id) =>
+      axios.get(`/api/authfilms/${id}`).then((res) => res.data.film),
 
     delete: (film) => axios.delete(`/api/authfilms/${film._id}`),
   },

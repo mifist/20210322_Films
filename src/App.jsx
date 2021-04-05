@@ -8,6 +8,9 @@ import { useUserState } from "contexts/UserContext";
 const FilmsPage = lazy(() => import("pages/FilmsPage"));
 const SignupPage = lazy(() => import("pages/SignupPage"));
 const LoginPage = lazy(() => import("pages/LoginPage"));
+const FilmDetails = lazy(() =>
+  import("pages/FilmsPage/components/FilmDetails")
+);
 
 const App = () => {
   const [message, setMessage] = useState("");
@@ -31,6 +34,10 @@ const App = () => {
 
         <Route path="/films">
           <FilmsPage user={user} />
+        </Route>
+
+        <Route path="/film/:id">
+          <FilmDetails />
         </Route>
 
         <Route path="/signup">
