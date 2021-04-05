@@ -47,7 +47,7 @@ class LoginForm extends Component {
     const { data, errors, loading } = this.state;
     const cls = loading ? "ui form loading" : "ui form";
     return (
-      <form className={cls} onSubmit={this.handleSubmit}>
+      <form data-testid="login-form"  className={cls} onSubmit={this.handleSubmit}>
         <div className={errors.email ? "error field" : "field"}>
           <label htmlFor="email">Email</label>
           <input

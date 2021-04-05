@@ -47,6 +47,11 @@ test("should invoke handleSubmit", () => {
 
   expect(submit).toHaveBeenCalledTimes(1);
   expect(submit).toHaveBeenCalledWith({ email, password });
+
+  userEvent.click(btnEl);
+
+  const formMsg = screen.queryByRole("alert");
+  expect(formMsg).toBeNull();
 });
 
 test("should show error message", () => {
@@ -56,17 +61,19 @@ test("should show error message", () => {
       <LoginForm submit={submit} />
     </Router>
   );
-  const { email, password } = buildFormData();
+  const { password } = buildFormData();
   const emailEl = screen.getByLabelText(/email/i);
   const passwordEl = screen.getByLabelText(/password/i);
   const btnEl = screen.getByText(/login/i);
 
-  userEvent.type(emailEl, email);
+  userEvent.type(emailEl, "fake email");
   userEvent.type(passwordEl, password);
 
   userEvent.click(btnEl);
 
-  /* find FormMesage 
-    exists in Dom
- */
+  const formMsg = screen.queryByRole("alert");
+  expect(formMsg).toBeInTheDocument();
+
+  const form = screen.getByTestId("login-form");
+  expect(form).not.toHaveClass("loading");
 });
