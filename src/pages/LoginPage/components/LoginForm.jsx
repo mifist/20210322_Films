@@ -1,7 +1,7 @@
 import { Component } from "react";
 import { Link } from "react-router-dom";
 
-import isEmail from "validator/es/lib/isEmail";
+import isEmail from "validator/lib/isEmail";
 import FormMessage from "components/FormMessage";
 
 const initialData = {
@@ -49,8 +49,9 @@ class LoginForm extends Component {
     return (
       <form className={cls} onSubmit={this.handleSubmit}>
         <div className={errors.email ? "error field" : "field"}>
-          <label>Email</label>
+          <label htmlFor="email">Email</label>
           <input
+            role="email"
             value={data.email}
             onChange={this.handleChange}
             type="text"
@@ -62,7 +63,7 @@ class LoginForm extends Component {
         </div>
 
         <div className={errors.password ? "error field" : "field"}>
-          <label>Password</label>
+          <label htmlFor="password">Password</label>
           <input
             value={data.password}
             onChange={this.handleChange}
