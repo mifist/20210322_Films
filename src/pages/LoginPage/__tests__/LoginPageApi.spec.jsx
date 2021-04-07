@@ -3,26 +3,10 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter as Router } from "react-router-dom";
 import LoginPage from "pages/LoginPage";
 import { UserContextProvider } from "contexts/UserContext";
-import { rest } from "msw";
-import { setupServer } from "msw/node";
+import users from "test/users";
 
 const fakeData = { email: "u1@com.ua", password: "secret" };
-const mockToken = "12345";
-
-const server = setupServer(
-  rest.post("/api/auth", async (req, res, ctx) => {
-    return res(ctx.json({ token: mockToken }));
-  })
-);
-
-beforeAll(() => {
-  server.listen();
-});
-
-afterAll(() => {
-  server.close();
-  jest.resetAllMocks();
-});
+const mockToken = users[0].token;
 
 const mockLogin = jest.fn();
 jest.mock("contexts/UserContext", () => ({
