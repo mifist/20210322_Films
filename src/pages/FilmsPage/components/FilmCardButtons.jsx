@@ -37,7 +37,7 @@ const FilmCardButtons = ({ film }) => {
   );
 
   const buttons = (
-    <div className="extra content">
+    <div data-testid="admin-buttons" className="extra content">
       <div className="ui two buttons">
         <SelectButton film={film} />
 
