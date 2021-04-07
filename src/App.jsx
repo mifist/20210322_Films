@@ -3,7 +3,6 @@ import { Route } from "react-router-dom";
 import TopNavigation from "components/TopNavigation";
 import HomePage from "pages/HomePage";
 import { FullSpinner } from "styles/app";
-import { useUserState } from "contexts/UserContext";
 
 const FilmsPage = lazy(() => import("pages/FilmsPage"));
 const SignupPage = lazy(() => import("pages/SignupPage"));
@@ -14,7 +13,6 @@ const FilmDetails = lazy(() =>
 
 const App = () => {
   const [message, setMessage] = useState("");
-  const user = useUserState();
 
   return (
     <Suspense fallback={<FullSpinner />}>
@@ -33,7 +31,7 @@ const App = () => {
         </Route>
 
         <Route path="/films">
-          <FilmsPage user={user} />
+          <FilmsPage />
         </Route>
 
         <Route path="/film/:id">

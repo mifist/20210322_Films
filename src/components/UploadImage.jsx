@@ -57,7 +57,11 @@ const UploadImage = ({ img, updatePhoto }) => {
     <div className="upload-box">
       <div className="image-box">
         <img src={renderImg} alt="fake img" />
-        <label disabled={isLoading} for="photo" className="image-box__label">
+        <label
+          disabled={isLoading}
+          htmlFor="photo"
+          className="image-box__label"
+        >
           Choose
         </label>
       </div>

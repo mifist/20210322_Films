@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Redirect, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { prop, sortWith, ascend, descend } from "ramda";
 import _find from "lodash/find";
 import FilmsList from "pages/FilmsPage/components/FilmsList";
@@ -64,25 +64,20 @@ class FilmsPage extends Component {
 
   render() {
     const { films, loading } = this.state;
-    const { user } = this.props;
     const cols = this.props.location.pathname === "/films" ? "sixteen" : "ten";
 
     return (
       <FilmContext.Provider value={this.value}>
         <div className="ui stackable grid">
-          {user.token && user.role === "admin" ? (
-            <div className="six wide column">
-              <AdminRoute path="/films/new">
-                <FilmForm films={films} saveFilm={this.saveFilm} />
-              </AdminRoute>
+          <div className="six wide column">
+            <AdminRoute path="/films/new">
+              <FilmForm films={films} saveFilm={this.saveFilm} />
+            </AdminRoute>
 
-              <AdminRoute path="/films/edit/:_id">
-                <FilmForm films={films} saveFilm={this.saveFilm} />
-              </AdminRoute>
-            </div>
-          ) : (
-            <Redirect to="/films" />
-          )}
+            <AdminRoute path="/films/edit/:_id">
+              <FilmForm films={films} saveFilm={this.saveFilm} />
+            </AdminRoute>
+          </div>
 
           <div className={`${cols} wide column`}>
             {loading ? <FullSpinner /> : <FilmsList films={films} />}
