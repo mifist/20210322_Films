@@ -1,5 +1,5 @@
 import { renderHook, act } from "@testing-library/react-hooks";
-import { useLogin, UserContextProvider } from "contexts/UserContext";
+import { useLogin, useLogout, UserContextProvider } from "contexts/UserContext";
 import jwtDecode from "jwt-decode";
 import { setAuthorizationHeader } from "api";
 
@@ -10,6 +10,11 @@ jest.mock("api");
 const wrapper = ({ children }) => (
   <UserContextProvider>{children}</UserContextProvider>
 );
+
+afterEach(() => {
+  jest.restoreAllMocks();
+  delete localStorage.filmsToken;
+});
 
 test("useLogin should return function", async () => {
   jwtDecode.mockImplementation(() => ({ user: {} }));
@@ -25,4 +30,15 @@ test("useLogin should return function", async () => {
   expect(setAuthorizationHeader).toHaveBeenCalledWith(mockToken);
 
   expect(localStorage.filmsToken).toBe(mockToken);
+});
+
+test("useLogout should remove from localStorage", async () => {
+  jwtDecode.mockImplementation(() => ({ user: {} }));
+
+  const { result } = renderHook(() => useLogout(), { wrapper });
+
+  act(() => result.current());
+
+  expect(setAuthorizationHeader).toHaveBeenCalledTimes(1);
+  expect(setAuthorizationHeader).toHaveBeenCalledWith();
 });

@@ -8,10 +8,11 @@ const Featured = ({ film }) => {
 
   return (
     <span
+      data-testid="featured-span"
       onClick={() => toggleFeatured(film._id)}
       className="ui right corner label"
     >
-      <i className={`star icon ${cls}`}></i>
+      <i data-testid="featured-icon" className={`star icon ${cls}`}></i>
     </span>
   );
 };
