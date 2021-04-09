@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useDeleteFilm } from "contexts/FilmContext";
+import { Link, useHistory } from "react-router-dom";
+import { useDeleteFilm } from "hooks/films";
 
 const SelectButton = ({ film }) => {
   return (
@@ -11,9 +11,15 @@ const SelectButton = ({ film }) => {
 };
 
 const DeleteButton = ({ film }) => {
-  const deleteFilm = useDeleteFilm();
+  const mutation = useDeleteFilm();
+  const history = useHistory();
+  const deleteFilm = () => {
+    mutation.mutate(film);
+    history.push("/films");
+  };
+
   return (
-    <span onClick={() => deleteFilm(film)} className="ui red basic button">
+    <span onClick={deleteFilm} className="ui red basic button">
       <i className="ui icon check" /> YES
     </span>
   );

@@ -1,16 +1,10 @@
-import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import useAsync from "hooks/useAsync";
-import api from "api";
+import { useFetchFilm } from "hooks/films";
 import { FullSpinner } from "styles/app";
 
 const FilmDetails = () => {
-  const { data: film, isLoading, isError, isSuccess, run } = useAsync();
   const { id } = useParams();
-
-  useEffect(() => {
-    run(api.films.fetchById(id));
-  }, [id, run]);
+  const { data: film, isLoading, isError, isSuccess } = useFetchFilm(id);
 
   return (
     <div>

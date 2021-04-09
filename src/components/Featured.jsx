@@ -1,15 +1,15 @@
-import { useToggleFeatured } from "contexts/FilmContext";
 import PropTypes from "prop-types";
+import { useToggleFeatured } from "hooks/films";
 
 const Featured = ({ film }) => {
-  const toggle = useToggleFeatured();
+  const mutation = useToggleFeatured();
 
   const cls = film.featured ? "yellow" : "empty";
 
   return (
     <span
       data-testid="featured-span"
-      onClick={() => toggle(film._id)}
+      onClick={() => mutation.mutate({ ...film, featured: !film.featured })}
       className="ui right corner label"
     >
       <i data-testid="featured-icon" className={`star icon ${cls}`}></i>

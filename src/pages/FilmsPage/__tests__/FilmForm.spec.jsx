@@ -2,34 +2,45 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import FilmForm from "pages/FilmsPage/components/FilmForm";
 import films from "test/films";
-import { AppProviders } from "contexts";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { queryConfig } from "contexts";
+import { UserContextProvider } from "contexts/UserContext";
+import { MemoryRouter as Router } from "react-router-dom";
+import * as funcs from "hooks/films";
 
-const mockUserState = { token: "12345", role: "admin" };
+function wrapper({ children }) {
+  const queryClient = new QueryClient(queryConfig);
+  return (
+    <Router>
+      <QueryClientProvider client={queryClient}>
+        <UserContextProvider>{children}</UserContextProvider>
+      </QueryClientProvider>
+    </Router>
+  );
+}
 
-jest.mock("contexts/UserContext", () => ({
-  ...jest.requireActual("contexts/UserContext"),
-  useUserState: () => mockUserState,
-}));
-
+const mockUser = { token: "12345", role: "admin" };
 const mockHistory = { push: jest.fn() };
+const mockFilm = films[0];
+const mockSaveFilm = jest.fn();
 
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useHistory: () => mockHistory,
 }));
 
-const mockFilm = films[0];
-const mockSaveFilm = jest.fn();
-jest.mock("contexts/FilmContext", () => ({
-  ...jest.requireActual("contexts/FilmContext"),
-  useStateFilms: () => mockFilm,
-  useSaveFilm: () => mockSaveFilm,
+jest.mock("contexts/UserContext", () => ({
+  ...jest.requireActual("contexts/UserContext"),
+  useUserState: () => mockUser,
 }));
 
 test("FilmForm should render correct", async () => {
-  mockSaveFilm.mockImplementation(() => Promise.resolve(mockFilm));
+  jest.spyOn(funcs, "useEditFilm").mockImplementation(() => mockFilm);
+  jest.spyOn(funcs, "useSaveFilm").mockImplementation(() => ({
+    mutate: mockSaveFilm,
+  }));
 
-  render(<FilmForm />, { wrapper: AppProviders });
+  render(<FilmForm />, { wrapper });
 
   userEvent.type(screen.getByLabelText(/title/i), mockFilm.title);
   userEvent.type(screen.getByLabelText(/image/i), mockFilm.img);
@@ -50,7 +61,8 @@ test("FilmForm should render correct", async () => {
 });
 
 test("should render FormMessage with error", async () => {
-  render(<FilmForm />, { wrapper: AppProviders });
+  jest.spyOn(funcs, "useEditFilm").mockImplementation(() => ({ _id: null }));
+  render(<FilmForm />, { wrapper });
 
   userEvent.type(screen.getByLabelText(/title/i), null);
   userEvent.type(screen.getByLabelText(/image/i), mockFilm.img);

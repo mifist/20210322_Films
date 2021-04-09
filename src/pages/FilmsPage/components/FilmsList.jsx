@@ -1,23 +1,13 @@
-import { memo, useState, useEffect } from "react";
+import { memo } from "react";
 import FilmCard from "pages/FilmsPage/components/FilmCard";
 import Message from "components/Message";
-import { useStateFilms, useLoadFilms } from "contexts/FilmContext";
+import { useLoadFilms } from "hooks/films";
 import { FullSpinner } from "styles/app";
 
 const FilmsList = () => {
-  const [loading, setLoading] = useState(true);
-  const loadFilms = useLoadFilms();
-  const films = useStateFilms();
+  const { data: films, isLoading } = useLoadFilms();
 
-  useEffect(() => {
-    async function load() {
-      await loadFilms();
-      setLoading(false);
-    }
-    load();
-  }, [loadFilms]);
-
-  if (loading) return <FullSpinner />;
+  if (isLoading) return <FullSpinner />;
 
   return (
     <div className="ui four cards">

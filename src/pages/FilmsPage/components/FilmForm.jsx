@@ -4,7 +4,7 @@ import { Link, useParams, useHistory, Redirect } from "react-router-dom";
 import UploadImage from "components/UploadImage";
 import FormMessage from "components/FormMessage";
 import setFormObj from "components/FormUtils";
-import { useStateFilms, useSaveFilm } from "contexts/FilmContext";
+import { useSaveFilm, useEditFilm } from "hooks/films";
 import { useUserState } from "contexts/UserContext";
 
 const initialData = {
@@ -21,25 +21,22 @@ const initialData = {
 const FilmForm = () => {
   const [data, setData] = useState(initialData);
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
 
-  const history = useHistory();
-  const { _id } = useParams();
-
-  const films = useStateFilms();
-  const saveFilm = useSaveFilm();
   const user = useUserState();
   const isAdmin = user.token && user.role === "admin";
 
+  const history = useHistory();
+  const { _id } = useParams();
+  const film = useEditFilm(_id);
+
   useEffect(() => {
-    const film = _find(films, { _id }) || {};
     if (film._id && film._id !== data._id) {
       setData(film);
     }
     if (!film._id && data._id) {
       setData(initialData);
     }
-  }, [_id, data._id, films]);
+  }, [_id, data._id, film]);
 
   const updatePhoto = (img) => {
     setData((data) => ({ ...data, img }));
@@ -60,20 +57,16 @@ const FilmForm = () => {
     return errors;
   };
 
+  const mutation = useSaveFilm(data);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const errors = validate(data);
     setErrors(errors);
 
     if (Object.keys(errors).length === 0) {
-      setLoading(true);
-
-      saveFilm(data)
-        .then(() => history.push("/films"))
-        .catch((err) => {
-          setErrors(err.response.data.errors);
-          setLoading(false);
-        });
+      mutation.mutate(data);
+      history.push("/films");
     }
   };
 
@@ -82,7 +75,7 @@ const FilmForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className={`ui form ${loading && "loading"}`}>
+    <form onSubmit={handleSubmit} className="ui form">
       <div className="ui grid mb-3">
         {/*  START two columns */}
         <div className="two column row">
