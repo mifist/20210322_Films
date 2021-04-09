@@ -2,14 +2,12 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AppProviders } from "contexts";
 import Featured from "components/Featured";
+import * as funcs from "contexts/FilmContext";
 
 const propsData = { film: { _id: "1", featured: true } };
-const mockToggleFeatured = jest.fn();
 
-jest.mock("contexts/FilmContext", () => ({
-  ...jest.requireActual("contexts/FilmContext"),
-  useToggleFeatured: () => mockToggleFeatured,
-}));
+jest.spyOn(funcs, "useToggleFeatured");
+const mockToggleFeatured = jest.fn();
 
 const RenderComponent = (props) => {
   return (
@@ -20,6 +18,7 @@ const RenderComponent = (props) => {
 };
 
 test("should correct render", () => {
+  funcs.useToggleFeatured.mockImplementation(() => mockToggleFeatured);
   const { rerender } = render(<RenderComponent {...propsData} />);
 
   const spanEl = screen.getByTestId("featured-span");

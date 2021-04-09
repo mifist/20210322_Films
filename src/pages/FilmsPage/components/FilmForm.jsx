@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import _find from "lodash/find";
-import { Link, useParams, useHistory } from "react-router-dom";
-import PropTypes from "prop-types";
+import { Link, useParams, useHistory, Redirect } from "react-router-dom";
 import UploadImage from "components/UploadImage";
 import FormMessage from "components/FormMessage";
 import setFormObj from "components/FormUtils";
+import { useStateFilms, useSaveFilm } from "contexts/FilmContext";
+import { useUserState } from "contexts/UserContext";
 
 const initialData = {
   _id: null,
@@ -17,7 +18,7 @@ const initialData = {
   featured: false,
 };
 
-const FilmForm = (props) => {
+const FilmForm = () => {
   const [data, setData] = useState(initialData);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -25,15 +26,20 @@ const FilmForm = (props) => {
   const history = useHistory();
   const { _id } = useParams();
 
+  const films = useStateFilms();
+  const saveFilm = useSaveFilm();
+  const user = useUserState();
+  const isAdmin = user.token && user.role === "admin";
+
   useEffect(() => {
-    const film = _find(props.films, { _id }) || {};
+    const film = _find(films, { _id }) || {};
     if (film._id && film._id !== data._id) {
       setData(film);
     }
     if (!film._id && data._id) {
       setData(initialData);
     }
-  }, [_id, data._id, props.films]);
+  }, [_id, data._id, films]);
 
   const updatePhoto = (img) => {
     setData((data) => ({ ...data, img }));
@@ -62,8 +68,7 @@ const FilmForm = (props) => {
     if (Object.keys(errors).length === 0) {
       setLoading(true);
 
-      props
-        .saveFilm(data)
+      saveFilm(data)
         .then(() => history.push("/films"))
         .catch((err) => {
           setErrors(err.response.data.errors);
@@ -71,6 +76,10 @@ const FilmForm = (props) => {
         });
     }
   };
+
+  if (!isAdmin) {
+    return <Redirect to="/films" />;
+  }
 
   return (
     <form onSubmit={handleSubmit} className={`ui form ${loading && "loading"}`}>
@@ -212,10 +221,6 @@ const FilmForm = (props) => {
       {/* END ui grid */}
     </form>
   );
-};
-
-FilmForm.propTypes = {
-  saveFilm: PropTypes.func.isRequired,
 };
 
 export default FilmForm;

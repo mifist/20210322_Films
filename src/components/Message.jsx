@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 const Message = ({ children, type, color }) => {
   return (
-    <div className={`ui icon   message ${color}`}>
+    <div aria-label="message" className={`ui icon   message ${color}`}>
       <i className={`icon ${type}`}></i>
       <div className="content">
         <div className="header">{children}</div>
